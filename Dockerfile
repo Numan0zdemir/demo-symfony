@@ -2,9 +2,11 @@
 FROM php:8.2-fpm
 
 # Gerekli sistem bağımlılıklarını kuruyoruz
-RUN apt-get update && apt-get install -y \
-    libzip-dev zip unzip git && \
-    docker-php-ext-install pdo pdo_mysql pdo_sqlite
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libzip-dev zip unzip git libsqlite3-dev pkg-config && \
+    docker-php-ext-configure zip && \
+    docker-php-ext-install zip pdo pdo_mysql pdo_sqlite && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Composer'ı kuruyoruz
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer

@@ -1,8 +1,7 @@
 pipeline {
     agent any
     environment {
-        DOCKER_HUB_USER = 'numan0zdemir'
-        DOCKER_HUB_PASS = credentials('dockerhub') // Jenkins Credential ID
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub')
         DOCKER_IMAGE = 'numan0zdemir/symfony-demo'
     }
     stages {
@@ -30,7 +29,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        echo $DOCKER_HUB_PASS | docker login -u $DOCKER_HUB_USER --password-stdin
+                        echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
                         docker push $DOCKER_IMAGE
                     '''
                 }

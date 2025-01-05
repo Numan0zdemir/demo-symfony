@@ -18,7 +18,7 @@ WORKDIR /app
 COPY . .
 
 # Bağımlılıkları kuruyoruz
-RUN composer install --no-dev --optimize-autoloader
+RUN composer install
 
 # PHP'nin production modunda çalışması için gerekli ayarlar
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"

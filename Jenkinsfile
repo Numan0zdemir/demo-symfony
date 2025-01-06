@@ -22,7 +22,7 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t $DOCKER_IMAGE .'
+                sh 'docker build -t $DOCKER_IMAGE:lts .'
             }
         }
         stage('Push to Docker Hub') {

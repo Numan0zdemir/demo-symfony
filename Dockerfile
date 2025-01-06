@@ -24,7 +24,7 @@ RUN composer install
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
 # Symfony'nin public dizinini expose ediyoruz
-EXPOSE 9000
+# EXPOSE 9000
 
 # Uygulamayı çalıştırmak için giriş komutunu belirliyoruz
 CMD ["php-fpm"]

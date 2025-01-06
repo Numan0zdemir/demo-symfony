@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: symfony-app
+  namespace: webapps
+  labels:
+    app: symfony-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: symfony-app
+  template:
+    metadata:
+      labels:
+        app: symfony-app
+    spec:
+      containers:
+      - name: symfony-app
+        image: numan0zdemir/symfony-demo
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9000
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /etc/nginx/conf.d/nginx.conf
+          subPath: nginx.conf
+          name: nginx-config
+      volumes:
+        - name: nginx-config
+          configMap:
+            name: nginx-config

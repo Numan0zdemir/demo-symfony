@@ -35,6 +35,18 @@ pipeline {
                 }
             }
         }
+        stage('Verify Deployment') {
+            steps {
+                withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: 'test', contextName: '', credentialsId: 'k8s-secret-token', namespace: 'webapps', serverUrl: 'https://E0CF599D9A07D26C3064967E1D3EC734.gr7.eu-central-1.eks.amazonaws.com']]) {
+                    sh "kubectl apply -f /helm-chart/configmap-app.yaml"
+                    sh "kubectl apply -f /helm-chart/deployment-app.yaml"
+                    sh "kubectl wait --for=condition=available --timeout=300s deployment -l symfony-app -n webapps"
+                    sh "kubectl apply -f /helm-chart/service-app.yaml"
+                    sh "kubectl apply -f /helm-chart/ingress-app.yaml"
+                    sh "kubectl get pods -n webapps"
+                }
+            }
+        }
     }
     post {
         always {

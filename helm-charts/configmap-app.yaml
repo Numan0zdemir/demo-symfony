@@ -9,7 +9,7 @@ data:
       listen 80;
       server_name app.onumanozdemir.online;
 
-      root /app/public;  # Symfony'nin public dizinine işaret ediyor
+      root /app/public;
       index index.php index.html index.htm;
 
       location / {

@@ -20,22 +20,22 @@ pipeline {
                 sh './bin/phpunit'
             }
         }
-        stage('Code Analysis') {
-            environment {
-                scannerHome = tool 'Sonar'
-            }
-            steps {
-                script {
-                    withSonarQubeEnv('Sonar') {
-                        sh """
-                            ${scannerHome}/bin/sonar-scanner \
-                            -Dsonar.projectKey=jenkins-demo \
-                            -Dsonar.projectName=jenkins-demo
-                        """
-                    }
-                }
-            }
-        }
+        // stage('Code Analysis') {
+        //     environment {
+        //         scannerHome = tool 'Sonar'
+        //     }
+        //     steps {
+        //         script {
+        //             withSonarQubeEnv('Sonar') {
+        //                 sh """
+        //                     ${scannerHome}/bin/sonar-scanner \
+        //                     -Dsonar.projectKey=jenkins-demo \
+        //                     -Dsonar.projectName=jenkins-demo
+        //                 """
+        //             }
+        //         }
+        //     }
+        // }
         // stage('Build Docker Image') {
         //     steps {
         //         sh 'docker build -t $DOCKER_IMAGE .'

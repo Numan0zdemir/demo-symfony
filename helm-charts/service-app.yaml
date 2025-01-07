@@ -15,8 +15,6 @@ spec:
     targetPort: 80
   - name: php
     protocol: TCP
-    # port: 9000
-    # targetPort: 9000
-    port: 9090
-    targetPort: 9090
+     port: 9000
+     targetPort: 9000
   type: ClusterIP

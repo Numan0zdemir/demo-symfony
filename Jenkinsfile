@@ -20,6 +20,22 @@ pipeline {
                 sh './bin/phpunit'
             }
         }
+        stage('Code Analysis') {
+            environment {
+                scannerHome = tool 'Sonar'
+            }
+            steps {
+                script {
+                    withSonarQubeEnv('Sonar') {
+                        sh """
+                            ${scannerHome}/bin/sonar-scanner \
+                            -Dsonar.projectKey=jenkins-demo \
+                            -Dsonar.projectName=jenkins-demo
+                        """
+                    }
+                }
+            }
+        }
         // stage('Build Docker Image') {
         //     steps {
         //         sh 'docker build -t $DOCKER_IMAGE .'
@@ -35,15 +51,9 @@ pipeline {
         //         }
         //     }
         // }
-        stage('Verify File') {
-            steps {
-                sh 'ls'
-                sh 'pwd'
-            }
-        }
         stage('Verify Deployment') {
             steps {
-                withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: 'test', contextName: '', credentialsId: 'k8s-secret-token', namespace: 'webapps', serverUrl: 'https://E0CF599D9A07D26C3064967E1D3EC734.gr7.eu-central-1.eks.amazonaws.com']]) {
+                withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: 'test', contextName: '', credentialsId: 'k8s-secret-token', namespace: 'webapps', serverUrl: 'https://B44816C7927AAA2398124BE59AD84577.gr7.eu-central-1.eks.amazonaws.com']]) {
                     sh "kubectl apply -f helm-charts/configmap-app.yaml"
                     sh "kubectl apply -f helm-charts/deployment-app.yaml"
                     sh "kubectl wait --for=condition=available --timeout=300s deployment -l app=symfony-app -n webapps"

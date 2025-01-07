@@ -20,7 +20,8 @@ spec:
         image: numan0zdemir/symfony-demo
         imagePullPolicy: Always
         ports:
-        - containerPort: 9000
+        # - containerPort: 9000
+        - containerPort: 9090
       - name: nginx
         image: nginx:latest
         ports:

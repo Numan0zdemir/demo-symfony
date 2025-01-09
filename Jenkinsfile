@@ -36,24 +36,24 @@ pipeline {
                 }
             }
         }
-        stage('Build Docker Image') {
-            steps {
-                sh 'docker build -t $DOCKER_IMAGE .'
-            }
-        }
-        stage('Push to Docker Hub') {
-            steps {
-                script {
-                    sh '''
-                        echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
-                        docker push $DOCKER_IMAGE
-                    '''
-                }
-            }
-        }
+        // stage('Build Docker Image') {
+        //     steps {
+        //         sh 'docker build -t $DOCKER_IMAGE .'
+        //     }
+        // }
+        // stage('Push to Docker Hub') {
+        //     steps {
+        //         script {
+        //             sh '''
+        //                 echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
+        //                 docker push $DOCKER_IMAGE
+        //             '''
+        //         }
+        //     }
+        // }
         stage('Verify Deployment') {
             steps {
-                withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: 'test', contextName: '', credentialsId: 'k8s-secret-token', namespace: 'webapps', serverUrl: 'https://B44816C7927AAA2398124BE59AD84577.gr7.eu-central-1.eks.amazonaws.com']]) {
+                withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: 'test', contextName: '', credentialsId: 'k8s-secret-token', namespace: 'webapps', serverUrl: 'https://7D46154418F0883CAE8C8903F4465390.gr7.eu-central-1.eks.amazonaws.com']]) {
                     sh "kubectl apply -f helm-charts/configmap-app.yaml"
                     sh "kubectl apply -f helm-charts/deployment-app.yaml"
                     sh "kubectl wait --for=condition=available --timeout=300s deployment -l app=symfony-app -n webapps"
